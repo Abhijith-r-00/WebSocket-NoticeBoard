@@ -213,6 +213,29 @@
         padding: 20px;
       }
     }
+    .toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #4caf50;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 12px;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease, bottom 0.3s ease;
+}
+
+.toast.show {
+  visibility: visible;
+  opacity: 1;
+  bottom: 50px;
+}
+
     
   </style>
 </head>

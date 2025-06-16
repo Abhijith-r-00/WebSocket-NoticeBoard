@@ -20,10 +20,10 @@ const io = new Server(server, {
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+const path = require('path');
 
-
-const path = require('path'); // Add at the top
+// Serve static files using absolute path
+app.use(express.static(path.join(__dirname, 'public'))); // Add at the top
 
 // Serve static files
 
@@ -44,9 +44,9 @@ app.get('/board', (req, res) => {
 
 
 // MongoDB Atlas Connection
-mongoose.connect('mongodb+srv://abhijithgru:zsryY6UMFTCTRZDh@cluster0.xorwhmd.mongodb.net/noticeBoard?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+ 
 }).then(() => console.log('✅ MongoDB Atlas connected'))
   .catch(err => console.error('❌ MongoDB Atlas connection error:', err));
 
