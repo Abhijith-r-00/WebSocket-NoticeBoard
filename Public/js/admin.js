@@ -10,4 +10,5 @@ document.getElementById('noticeForm').addEventListener('submit', (e) => {
 
   document.getElementById('title').value = '';
   document.getElementById('message').value = '';
+  
 });
