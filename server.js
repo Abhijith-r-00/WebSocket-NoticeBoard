@@ -26,7 +26,6 @@ app.use(express.static('public'));
 const path = require('path'); // Add at the top
 
 // Serve static files
-app.use(express.static('public'));
 
 // Custom routes
 app.get('/', (req, res) => {
