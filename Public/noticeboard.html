@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Notice Board</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4895ef;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: var(--dark);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #6c757d;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      gap: 15px;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 500px;
+      border: 2px solid #e9ecef;
+      padding: 12px 20px 12px 45px;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+      background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%236c757d" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>') no-repeat 15px center;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .refresh-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .refresh-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .refresh-btn:active {
+      transform: translateY(0);
+    }
+
+    .refresh-btn.rotating i {
+      animation: rotate 1s linear infinite;
+    }
+
+    .notices-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .notice {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .notice:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .notice h3 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .notice p {
+      color: var(--dark);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .notice small {
+      color: #6c757d;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      color: #e9ecef;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .controls {
+        flex-direction: column;
+      }
+      
+      .search-box {
+        width: 100%;
+        max-width: none;
+      }
+      
+      .refresh-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-bullhorn"></i> Live Notice Board</h1>
+      <p class="subtitle">Important announcements in real-time</p>
+    </header>
+
+    <div class="controls">
+      <input type="text" class="search-box" placeholder="Search notices..." id="searchInput">
+      <button class="refresh-btn" id="refreshBtn">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+
+    <div class="notices-container" id="notices">
+      <div class="empty-state">
+        <i class="fas fa-bell-slash"></i>
+        <h3>No notices available</h3>
+        <p>When new notices are posted, they'll appear here</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    // Your original script implementation
+    const socket = io();
+    const noticeContainer = document.getElementById('notices');
+    const searchInput = document.getElementById('searchInput');
+    const refreshBtn = document.getElementById('refreshBtn');
+    let allNotices = [];
+
+    // Load existing notices - exactly as in your original
+    fetch('/notices')
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          noticeContainer.innerHTML = '';
+          data.forEach(notice => renderNotice(notice));
+        }
+      })
+      .catch(err => console.error('Error loading notices:', err));
+
+    // Listen for new notices - exactly as in your original
+    socket.on('new-notice', (notice) => {
+      if (noticeContainer.querySelector('.empty-state')) {
+        noticeContainer.innerHTML = '';
+      }
+      renderNotice(notice);
+    });
+
+    // Your original renderNotice function with design enhancements
+    function renderNotice(notice) {
+      const div = document.createElement('div');
+      div.className = 'notice';
+      div.innerHTML = `
+        <h3>${notice.title}</h3>
+        <p>${notice.message}</p>
+        <small><i class="far fa-clock"></i> ${new Date(notice.createdAt).toLocaleString()}</small>
+      `;
+      noticeContainer.prepend(div);
+      
+      // Add animation for new notices
+      div.style.animation = 'fadeIn 0.5s ease-out';
+    }
+
+    // Search functionality added to your original script
+    searchInput.addEventListener('input', () => {
+      const searchTerm = searchInput.value.toLowerCase();
+      const notices = document.querySelectorAll('.notice');
+      
+      if (searchTerm === '') {
+        notices.forEach(notice => notice.style.display = '');
+        return;
+      }
+      
+      notices.forEach(notice => {
+        const title = notice.querySelector('h3').textContent.toLowerCase();
+        const content = notice.querySelector('p').textContent.toLowerCase();
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+          notice.style.display = '';
+        } else {
+          notice.style.display = 'none';
+        }
+      });
+      
+      // Handle empty state
+      const visibleNotices = Array.from(notices).filter(n => n.style.display !== 'none');
+      if (visibleNotices.length === 0 && notices.length > 0) {
+        noticeContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <h3>No matching notices found</h3>
+            <p>Try a different search term</p>
+          </div>
+        `;
+      } else if (visibleNotices.length === 0) {
+        noticeContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-bell-slash"></i>
+            <h3>No notices available</h3>
+            <p>When new notices are posted, they'll appear here</p>
+          </div>
+        `;
+      }
+    });
+
+    // Refresh button functionality
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.classList.add('rotating');
+      // In your actual implementation, you might fetch notices again here
+      setTimeout(() => {
+        refreshBtn.classList.remove('rotating');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

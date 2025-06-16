@@ -1,0 +1,24 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f4f4f4;
+}
+h1 {
+  color: #333;
+}
+form, .notice {
+  background: #fff;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.notice h3 {
+  margin: 0 0 5px;
+}
+.notice p {
+  margin: 0 0 10px;
+}
+.notice small {
+  color: #666;
+}
