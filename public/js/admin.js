@@ -11,10 +11,10 @@ document.getElementById('noticeForm').addEventListener('submit', (e) => {
   document.getElementById('title').value = '';
   document.getElementById('message').value = '';
 
-  showToast("✅ Notice posted successfully!");
+  showToast(" Notice posted successfully!");
 });
 
-// Toast function
+
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast';
